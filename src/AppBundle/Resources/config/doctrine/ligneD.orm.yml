@@ -1,0 +1,32 @@
+AppBundle\Entity\ligneD:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\ligneDRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    manyToOne:
+        epi:
+            targetEntity: epi
+            cascade: ["persist"]
+        lesDemandes:
+            targetEntity: lesDemandes
+            inversedBy: ligneD
+            cascade: ["persist"]
+    oneToMany:
+    fields:
+        selection:
+            type: boolean
+        taille:
+            type: string
+            length: 255
+            nullable: true
+        quantite:
+            type: string
+            length: 255
+            nullable: true
+
+    lifecycleCallbacks: {  }

@@ -1,0 +1,32 @@
+{% block subject %}
+Votre demande d'EPI n° {{ demande.id}} a bien été envoyée
+{% endblock %}
+
+{% block body_html %}
+<br/><br/>
+<h3>Détails :</h3>
+<br/>
+
+Bénéficiaire : {{demande.technicien.nom}} {{demande.technicien.prenom}}
+<br/>
+{% for ligne in demande.ligneD %}
+
+{{"-----------------------------------------"|nl2br}}
+<br/>
+{{"#"|nl2br}} {{loop.index }}
+<br/>
+Refrence Maximo : {{ligne.epi.refMaximo}}
+<br/>
+Description : {{ligne.epi.description}}
+<br/>
+Taille : {{ligne.taille}}
+<br/>
+Quantité : {{ligne.quantite}}
+<br/>
+Prix : {{ligne.epi.puht|round(2)}}
+<br/>
+{{"-----------------------------------------"|nl2br}}
+{% endfor %}
+<br/>
+Commentaire : {{demande.commentaire}}
+{% endblock %}

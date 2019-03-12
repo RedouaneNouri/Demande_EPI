@@ -1,0 +1,24 @@
+{% extends "epiValide.html.twig" %}
+{% block head %}
+<head>
+   <meta charset ="UTF-8">
+   <title> Demande EPI </title>
+
+
+   <!--        Stylesheets       -->
+   <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
+   <link rel="stylesheet" href="{{ asset('css/epiValide.css') }}" />
+   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+ </head>
+
+{% endblock %}
+{% block print %}{{ parent() }} {% endblock %}
+{% block buttons %}
+{% endblock %}
+{% block javascript%}
+{{ parent() }}
+<script>
+  window.print();
+</script>
+{% endblock %}

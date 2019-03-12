@@ -1,0 +1,142 @@
+<!doctype html>
+
+
+
+<html lang="fr">
+
+<head>
+   <meta charset ="UTF-8">
+   <title>Liste des demandes EPI </title>
+
+   <!--        Stylesheets       -->
+   <!--        Stylesheets       -->
+   <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
+   <link rel="stylesheet" href="{{ asset('css/listeDemande.css') }}" />
+   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"
+
+</head>
+  <body>
+
+    <div>
+      <!-- navbar (Bootstrap classes) -->
+      <nav id="nav" class="navbar navbar-expand-sm  ">
+     <!-- Brand -->
+     <a class="navbar-brand" href="{{ path('demande') }}">Demande EPI</a>
+
+     <!-- Links -->
+
+     <ul class="navbar-nav">
+
+       {% if  (app.user.hasRole('ROLE_ADMIN') or app.user.hasRole('ROLE_VALIDEUR'))%}
+         <li class="nav-item">
+           <a class="nav-link" href="{{ path('listeDemande') }}">Historique des demandes</a>
+         </li>
+
+         <li class="nav-item">
+           <a class="nav-link" href="{{ path('fos_user_registration_register') }}">Ajouter un utilisateur</a>
+         </li>
+
+         <li class="nav-item ">
+           <a class="nav-link " href="{{ path('gestionRessources') }}"  >
+             Gestion de ressources
+           </a>
+         </li>
+         <li class="nav-item ">
+           <a class="nav-link " href="{{ path('chart') }}" >
+             Statistiques
+           </a>
+         </li>
+         <li class="nav-item ">
+           <a class="nav-link " href="https://drive.google.com/open?id=10OXhpcbkLzNPfxZP7VJc0byJDcnuWQJQKBYOjTTpYzo" >
+             Guide d'utilisation
+           </a>
+         </li>
+
+         {% endif %}
+       </ul>
+     </nav>
+    </br>
+  </div>
+
+  <div id="filter" class="row">
+    <table id="table_filter" >
+
+      <tr>
+        {{ form_start(form) }}
+        {{form_errors(form.date)}}
+        <td>{{form_widget(form.technicien)}}</td>
+        <td>{{form_widget(form.demandeur)}}</td>
+        <td colspan="4">{{form_widget(form.date)}}</td>
+        <td>{{form_widget(form.statut)}}</td>
+        <td>{{form_widget(form.chercher)}}</td>
+        {{ form_end(form) }}
+      </tr>
+
+      </table>
+    </div>
+    <div id="divTab">
+        <h3 id="myTitle">Demandes à traiter</h3>
+
+        <table id="tab" class="table table-striped"  >
+
+
+        </br>
+        <tr id="tabHeader">
+            <th>id</th>
+            <th>demandeur</th>
+            <th>bénéficiaire</th>
+            <th>date</th>
+            <th></th>
+        </tr>
+        {% for demande in allDemande %}
+          {% if demande.valide == 0 %}
+        <tr>
+            <td>{{demande.id}}</td>
+            <td>{{demande.demandeur.nom}} {{demande.demandeur.prenom}}</td>
+            <td>{{demande.technicien.nom}} {{demande.technicien.prenom}}</td>
+            <td>{{demande.date|date('Y-m-d H:i:s') }}</td>
+            <td><a href="{{ path('aValider') }}?id={{demande.id}}">Voir la demande</a> </td>
+        </tr>
+          {% endif %}
+        {% endfor %}
+        </table>
+  </div>
+  <div id="divTab2">
+      <!--  validated demandes -->
+        <h3  id="myTitle2">Demandes traitées</h3>
+                </br>
+        <table id ="tab2" class="table table-striped" >
+            <tr id="tabHeader">
+                <th>id</th>
+                <th>demandeur</th>
+                <th>bénéficiaire</th>
+                <th>date</th>
+                <th>statut</th>
+                <th> -----> </th>
+            </tr>
+            <tbody>
+            {% for demande in allDemande %}
+                {% if demande.valide != 0 %}
+              <tr>
+                  <td>{{demande.id}}</td>
+                  <td>{{demande.demandeur.nom}} {{demande.demandeur.prenom}}</td>
+                  <td>{{demande.technicien.nom}} {{demande.technicien.prenom}}</td>
+                  <td>{{demande.date|date('Y-m-d H:i') }}</td>
+                    {% if demande.valide == 1 %}
+                      <td style="color:green" > demande validée</td>
+                      {% elseif demande.valide == 2 %}
+                      <td style="color:red" > demande refusée </td>
+                      {% elseif demande.valide == 3 %}
+                      <td style="color:#FFA500"> demande expédiée </td>
+                      {% endif %}
+
+                  <td><a href="{{ path('aValider') }}?id={{demande.id}}">Voir la demande</a> </td>
+              </tr>
+                {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+  </div>
+  </body>
+</html>

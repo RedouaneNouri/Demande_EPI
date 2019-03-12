@@ -1,0 +1,33 @@
+AppBundle\Entity\lesDemandes:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\lesDemandesRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+
+    oneToMany:
+        ligneD:
+            targetEntity: ligneD
+            mappedBy: lesDemandes
+            cascade: ["persist"]
+    manyToOne:
+        technicien:
+            targetEntity: Techniciens
+            inversedBy: lesDemandes
+            cascade: ["persist"]
+        demandeur:
+            targetEntity: User
+            inversedBy: lesDemandes
+    fields:
+            commentaire:
+                type: text
+                nullable: true
+            date:
+                type: datetime
+            valide:
+                type: integer
+    lifecycleCallbacks: {  }

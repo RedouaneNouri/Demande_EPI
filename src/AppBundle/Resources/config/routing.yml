@@ -1,0 +1,11 @@
+sudac_homepage:
+    path:     /
+    defaults: { _controller: AppBundle:Default:index }
+    requirements:
+      _methode : POST
+
+demandeEPI:
+    path: /demande
+    defaults: { _conroller: AppBundle:epi:demande }
+    requirements:
+      _methode : POST

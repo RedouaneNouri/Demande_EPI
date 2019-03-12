@@ -1,0 +1,25 @@
+
+body {
+    background-color : #1976D2;
+    font-family:  'Roboto', sans-serif;
+    color : white;
+}
+
+#gestionForm{
+  width : 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.myTitle{
+  color:white;
+  text-shadow: 2px 1px black;
+  text-align: center;
+}
+
+#nav{
+  background-color: white;
+}
+li{
+  padding-right: 30px;
+}

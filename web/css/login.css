@@ -1,0 +1,42 @@
+body {
+    background-color : #1976D2;
+    font-family:  'Roboto', sans-serif;
+    color : black;
+  }
+  table, th, td {
+    border: 1px  black;
+    text-shadow: 2px;
+    padding: .3rem;
+  }
+  thead th {
+      vertical-align: middle;
+      border-bottom: (2 * $table-border-width) solid $table-border-color;
+    }
+input{
+
+}
+
+#idForm{
+  position:absolute;
+   left: 30%;
+   width: 30%;
+}
+
+.form-check-input{
+     margin-left: -9em;
+}
+
+#nav{
+  background-color: white;
+}
+
+li{
+  padding-right: 30px;
+}
+#remember_me{
+  padding: 0px;
+  margin: 0px;
+}
+#_submit{
+  position: center;
+}

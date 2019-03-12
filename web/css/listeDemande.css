@@ -1,0 +1,72 @@
+body {
+    background-color : #1976D2;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1em;
+    color : black;
+}
+
+#tab{
+      width:95%;
+      margin-left: auto;
+      margin-right: auto;
+      background-color: white;
+    }
+
+#tab2{
+      width:95%;
+      margin-left: auto;
+      margin-right: auto;
+      background-color: white;
+    }
+
+#divTab{
+      margin-left: auto;
+      margin-right: auto;
+      padding: 15px;
+      width : 90%;
+    }
+#divTab2{
+    margin-left: auto;
+    margin-right: auto;
+    padding: 15px;
+    width : 90%;
+  }
+table, th, td {
+  /*    border: 1px solid black;*/
+      font-family: raleway;
+      text-shadow: 2px;
+      font-family: 'Open Sans', sans-serif;
+}
+
+#tabHeader{
+  background-color: #CFD8DC;
+}
+#myTitle{
+  color:white;
+  text-shadow: 2px 1px black;
+  text-align: center;
+}
+#myTitle2{
+  color:white;
+  text-shadow: 2px 1px black;
+  text-align: center;
+}
+#nav{
+  background-color: white;
+}
+li{
+  padding-right: 30px;
+}
+
+/*if you want to add "imprier buuton"*/
+/*#button-imprimer{
+  position: relative;
+  left: 89%;
+}*/
+
+#filter{
+  margin-left: auto;
+  margin-right: auto;
+  width : 83%;
+  padding: 15px;
+}

@@ -1,0 +1,107 @@
+
+body {
+    background-color : #1976D2;
+    font-family:  'Roboto', sans-serif;
+    color : black;
+}
+
+h3 {
+  color: red;
+}
+
+table, th, td {
+  border: 1px  black;
+  text-shadow: 2px;
+  padding: .3rem;
+}
+thead th {
+    vertical-align: middle;
+    border-bottom: (2 * $table-border-width) solid $table-border-color;
+  }
+.table {
+  vertical-align : middle;
+  width : 90%;
+  max-width: 90%;
+}
+.th{
+  vertical-align : middle;
+}
+.td{
+  vertical-align : middle;
+}
+#divTab{
+  padding: 0px;
+  width : 80%;
+  text-align: center;
+  background-color : white;
+  margin-bottom: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#tab{
+  width:100%;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+#totalPrix{
+  text-align: right;
+  vertical-align: middle;
+}
+
+#total{
+  vertical-align: middle;
+  text-align: center;
+}
+
+.myCb{
+  text-align: center; /* center checkbox horizontally */
+   vertical-align: middle; /* center checkbox vertically */
+}
+
+.form-check-input{
+  margin-left: 0;
+}
+
+.form-control {
+  width: 40%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#appbundle_epi_commentaire{
+  background-color: #E0E0E0;
+}
+
+#topPart{
+  background-color: #1976D2;
+  width:100%
+  margin:0px;
+  padding: 0px;
+  color:white;
+}
+/* get higher contrast on table strips */
+tr:nth-child(even) {
+    background-color: #E0E0E0;
+}
+.form-check-input{
+    width: 20px;
+    height: 20px;
+}
+#demandeur{
+  background-color: white;
+  color:black;
+
+}
+#divdemandeur{
+  background-color: white;
+  width:40%;
+}
+#nav{
+  background-color: white;
+}
+li{
+  padding-right: 30px;
+}

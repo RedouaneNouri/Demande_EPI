@@ -1,0 +1,87 @@
+{% extends "@FOSUser/layout.html.twig" %}
+
+{% block fos_user_content %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+<!doctype html>
+
+ <html lang="fr">
+
+ <head>
+ 		<meta charset ="UTF-8">
+ 		<title> Ajouter un utilisateur </title>
+
+
+    <!--        Stylesheets       -->
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/ajut.css') }}" />
+    <script href="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script href="{{ asset('js/jquery.min.js') }}"></script>
+    <script href="{{ asset('js/bootstrap.js') }}"></script>
+    <link src="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link src="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"
+
+ </head>
+ <body>
+   <div>
+     <!-- navbar (Bootstrap classes) -->
+     <nav id="nav" class="navbar navbar-expand-sm  ">
+    <!-- Brand -->
+    <a class="navbar-brand" href="{{ path('demande') }}">Demande EPI</a>
+
+    <!-- Links -->
+
+    <ul class="navbar-nav">
+
+      {% if  (app.user.hasRole('ROLE_ADMIN') or app.user.hasRole('ROLE_VALIDEUR'))%}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ path('listeDemande') }}">Historique des demandes</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{{ path('fos_user_registration_register') }}">Ajouter un utilisateur</a>
+        </li>
+
+        <li class="nav-item ">
+          <a class="nav-link " href="{{ path('gestionRessources') }}"  >
+            Gestion de ressources
+          </a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link " href="{{ path('chart') }}" >
+            Statistiques
+          </a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link " href="https://drive.google.com/open?id=10OXhpcbkLzNPfxZP7VJc0byJDcnuWQJQKBYOjTTpYzo" >
+            Guide d'utilisation
+          </a>
+        </li>
+
+        {% endif %}
+      </ul>
+    </nav>
+   </br>
+ </div>
+
+  <div id="formAjouter">
+     {% include "@FOSUser/Registration/register_content.html.twig" %}
+
+      {{ form_widget(form.email, { 'attr': { 'maxlength' : 30 }}) }}
+
+      {{ form_widget(form.username, { 'attr': { 'maxlength' : 30 }}) }}
+
+      {{ form_widget(form.plainPassword, { 'attr': { 'maxlength' : 30 }}) }}
+
+      {{ form_widget(form.prenom, { 'attr': { 'maxlength' : 30 }}) }}
+
+      {{ form_widget(form.nom, { 'attr': { 'maxlength' : 30 }}) }}
+
+      {{ form_widget(form.roles, {'attr': {'class': 'checkbox'}})}}
+
+    </div>
+    <div id="formSupprimer">
+    </div>
+
+</body>
+{% endblock fos_user_content %}

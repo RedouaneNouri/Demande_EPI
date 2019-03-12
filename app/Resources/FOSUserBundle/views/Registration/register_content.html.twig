@@ -1,0 +1,20 @@
+{% trans_default_domain 'FOSUserBundle' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+<!--        Stylesheets       -->
+<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/ajut.css') }}" />
+<script href="{{ asset('js/bootstrap.min.js') }}"></script>
+<script href="{{ asset('js/jquery.min.js') }}"></script>
+<script href="{{ asset('js/bootstrap.js') }}"></script>
+<link src="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<link src="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"
+
+</head>
+
+{{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+    {{ form_widget(form) }}
+
+    <div>
+        <input class="btn-danger" type="submit" value="{{ 'registration.submit'|trans }}" />
+    </div>
+{{ form_end(form) }}

@@ -1,0 +1,33 @@
+AppBundle\Entity\epi:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\epiRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        refMaximo:
+            type: integer
+            unique: true
+            column: ref_maximo
+        description:
+            type: text
+        refLyreco:
+            type: string
+            length: '255'
+            nullable: true
+            column: ref_lyreco
+        taille:
+            type: string
+            length: 255
+            nullable: true
+        puht:
+            type: float
+            nullable: true
+        actif:
+            type: integer
+            nullable: false
+    lifecycleCallbacks: {  }

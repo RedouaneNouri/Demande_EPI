@@ -1,0 +1,72 @@
+
+body {
+    background-color : #1976D2;
+    font-family:  'Roboto', sans-serif;
+    color : black;
+  }
+  table, th, td {
+    border: 1px  black;
+    text-shadow: 2px;
+    padding: .3rem;
+  }
+  thead th {
+      vertical-align: middle;
+      border-bottom: (2 * $table-border-width) solid $table-border-color;
+    }
+input{
+  width:100%;
+}
+
+#fos_user_registration_form{
+  margin:0 auto;
+  width : 80%;
+  left: 40%;
+
+}
+
+#formAjouter{
+  /*position: absolute;
+   left: auto;
+   right: auto;*/
+   margin:0 auto;
+   background-color: #CFD8DC;
+   width:40%;
+   left: 40%;
+   border-radius: 5px;
+   text-align: center
+}
+
+
+
+#nav{
+  background-color: white;
+}
+li{
+  padding-right: 30px;
+}
+
+#formAjouterInterne{
+  position: center;
+}
+
+.form-check-input {
+    width: 20px;
+    height: 20px;
+}
+
+#fos_user_registration_form_roles{
+  text-align: left;
+}
+
+
+input[type=checkbox], input[type=radio] {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+.btn-danger{
+
+  position: relative;
+  width: auto;
+  border-radius: 5px;
+}

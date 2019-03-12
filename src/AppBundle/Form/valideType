@@ -1,0 +1,34 @@
+<?php
+
+namespace AppBundle\Form;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use AppBundle\Entity\ligneD;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+
+class valideType extends AbstractType
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+        ->add('ligneD', CollectionType::class, array(
+        'entry_type' => ligneType::class))
+        ->add('Valider', ButtonType::class, array(
+            'attr' => ''))
+        ->add('Refuser', ButtonType::class, array(
+            'attr' => ''))
+        ->add('Expédier', ButtonType::class, array(
+            'attr' => ''))
+        ->add('commentaire', TextareaType::class, array(
+              'attr' => array('style' => 'width: 95%'),
+              'required' => false));
+    }
+}

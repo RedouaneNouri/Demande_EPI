@@ -1,0 +1,171 @@
+<!doctype html>
+
+<html lang="fr">
+{% block head%}
+<head>
+   <meta charset ="UTF-8">
+   <title> Demande EPI </title>
+
+
+   <!--        Stylesheets       -->
+   <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
+   <link rel="stylesheet" href="{{ asset('css/epiValide.css') }}" />
+   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+   <div>
+     <!-- navbar (Bootstrap classes) -->
+     <nav id="nav" class="navbar navbar-expand-sm  ">
+    <!-- Brand -->
+    <a class="navbar-brand" href="{{ path('demande') }}">Demande EPI</a>
+
+    <!-- Links -->
+
+    <ul class="navbar-nav">
+
+      {% if  (app.user.hasRole('ROLE_ADMIN') or app.user.hasRole('ROLE_VALIDEUR'))%}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ path('listeDemande') }}">Historique des demandes</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{{ path('fos_user_registration_register') }}">Ajouter un utilisateur</a>
+        </li>
+
+        <li class="nav-item ">
+          <a class="nav-link " href="{{ path('gestionRessources') }}"  >
+            Gestion de ressources
+          </a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link " href="{{ path('chart') }}" >
+            Statistiques
+          </a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link " href="https://drive.google.com/open?id=10OXhpcbkLzNPfxZP7VJc0byJDcnuWQJQKBYOjTTpYzo" >
+            Guide d'utilisation
+          </a>
+        </li>
+
+        {% endif %}
+      </ul>
+    </nav>
+   </br>
+ </div>
+
+</head>
+{% endblock %}
+<body>
+  {% block demandeInfoTab%}
+      <h4 id="demandeHead"> Demande : {{id}}</h4>
+        <div id="divTab">
+          <table id="visutab" class="table table-striped">
+            {% for demande in demande %}
+              <tr>
+                <th>Statut</th>
+                  {% if demande.valide == 0 %}
+                    <th colspan="5"> à valider</th>
+                  {% elseif demande.valide == 1 %}
+                    <th style="color:green" colspan="5"> demande validée</th>
+                  {% elseif demande.valide == 2 %}
+                  <th style="color:red" colspan="5"> demande refusée </th>
+                  {% else %}
+                  <th style="color:#FFA500" colspan="5"> demande expédiée </th>
+                  {% endif %}
+
+              </tr>
+              <tr>
+                <th>Demandeur</th>
+                <td colspan="5">{{demande.demandeur.nom}} {{demande.demandeur.prenom}}</td>
+              </tr>
+              <tr>
+                <th>Béneficiaire</th>
+                <th>{{demande.technicien.nom}} {{demande.technicien.prenom}}</th>
+
+                <th>BT</th>
+                <th colspan="3">{{demande.technicien.bt}}</th>
+              </tr>
+
+              <tr>
+                <th colspan="6"> Epi demandés  </th>
+              </tr>
+
+              <tr>
+                <th>#</th>
+                <th>reference Maximo</th>
+                <th>Description</th>
+                <th>Taille</th>
+                <th>Quantite</th>
+                <th>Prix Unitaire HT</th>
+              </tr>
+                {% for ligne in demande.ligneD %}
+                  <tr>
+                    <td> {{ loop.index }}</td>
+                    <td class ="refMax">{{ligne.epi.refMaximo}}</td>
+                    <td>{{ligne.epi.description}}</td>
+                    <td>{{ligne.taille}}</td>
+                    <td id="qte_{{ loop.index }}">{{ligne.quantite}}</td>
+                    <td id="puht_{{ loop.index }}">{{ligne.epi.puht|round(2)}}</td>
+                  </tr>
+                {% endfor %}
+              <tr>
+                <th colspan="5" id="totalPrix"> Prix Total HT €</th>
+                <td id="total"></td>
+              </tr>
+              <tr>
+                <td colspan="6" id="comm">Commentaire : {{demande.commentaire}}</td>
+              </tr>
+              {% endfor %}
+              <tr>
+                <td colspan="6">
+                    <div class="form-group">
+                      <label for="comment">Ajouter un commentaire valideur:</label>
+                      <textarea class="form-control" rows="5" form="principalForm" name="commentaire" id="comment"></textarea>
+                    </div>
+                </td>
+              </tr>
+          </table>
+           {% endblock %}
+           {% block buttons%}
+          <div id="buttons">
+          <form method="POST" id="principalForm" action="{{ path('accept')}}">
+            <input name="demandeId" type="hidden" value="{{id}}"></input>
+            {% if demande[0].valide != 1 and demande[0].valide != 3 %}
+            <button id="accepter" class="btn btn-primary" type="submit" name="accepter" value="accept">valider</button>
+            {% endif %}
+            {% if demande[0].valide != 2 and demande[0].valide != 1 and demande[0].valide != 3 %}
+            <button id="refuser" class="btn btn-primary" type="submit" name="refuser" value="refuser">refuser </button>
+            {% endif %}
+            {% if demande[0].valide == 1 %}
+            <button id="refuser" class="btn btn-primary" type="submit" name="expedier" value="expedier">expedier </button>
+            {% endif %}
+          </br></br>
+              <a class="btn btn-danger" href="{{ path('print',{'id': id }) }}" target="_blank" type="button" id="button-imprimer" value="Imprimer"> Imprimer </a>
+          </div>
+        </form>
+        {% endblock %}
+</body>
+
+{% block javascript %}
+<script>
+
+
+var prix = new Array();
+var qte = new Array();
+var z, sum;
+/* function that computes total "epi" selected price */
+sum=0;
+ for (var z=1; z <= {{ demande[0].ligneD | length }} ; z++){
+
+      var y = document.getElementById('qte_'+z).innerHTML;
+      var x = document.getElementById('puht_'+z).innerHTML;
+        qte[z] = parseFloat(x) ;
+        prix[z] = parseFloat(y) ;
+        sum += (prix[z]*qte[z]);
+  }
+      document.getElementById("total").innerHTML = sum.toFixed(2) ;
+</script>
+{% endblock %}
+</html>

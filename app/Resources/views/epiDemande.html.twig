@@ -1,0 +1,275 @@
+<!-- {% form_theme form 'bootstrap_4_layout.html.twig' %} -->
+
+ <!doctype html>
+
+ <html lang="fr">
+
+ <head>
+ 		<meta charset ="UTF-8">
+ 		<title> Demande EPI </title>
+
+
+    <!--        Stylesheets       -->
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/demande.css') }}" />
+    <script href="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script href="{{ asset('js/jquery.min.js') }}"></script>
+    <script href="{{ asset('js/bootstrap.js') }}"></script>
+    <link src="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link src="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"
+
+ </head>
+ <body>
+   <div>
+     <!-- navbar (Bootstrap classes) -->
+     <nav id="nav" class="navbar navbar-expand-sm  ">
+    <!-- Brand -->
+    <a class="navbar-brand" href="{{ path('demande') }}">Demande EPI</a>
+
+    <!-- Links -->
+
+    <ul class="navbar-nav">
+
+      {% if  (app.user.hasRole('ROLE_ADMIN') or app.user.hasRole('ROLE_VALIDEUR'))%}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ path('listeDemande') }}">Historique des demandes</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{{ path('fos_user_registration_register') }}">Ajouter un utilisateur</a>
+        </li>
+
+        <li class="nav-item ">
+          <a class="nav-link " href="{{ path('gestionRessources') }}"  >
+            Gestion de ressources
+          </a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link " href="{{ path('chart') }}" >
+            Statistiques
+          </a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link " href="https://drive.google.com/open?id=10OXhpcbkLzNPfxZP7VJc0byJDcnuWQJQKBYOjTTpYzo" >
+            Guide d'utilisation
+          </a>
+        </li>
+
+        {% endif %}
+      </ul>
+    </nav>
+   </br>
+ </div>
+
+ 
+{% for flashMessage in app.session.flashbag.get('notice') %}
+
+  <div class="alert alert-success">
+      {{ flashMessage }}
+  </div>
+{% endfor %}
+
+{% for flashMessage in app.session.flashbag.get('warning') %}
+
+    <div class="alert alert-danger">
+        {{ flashMessage }}
+    </div>
+
+{% endfor %}
+
+
+   <!-- Titre -->
+   <!-- <h3>Demande d'EPI</h3> -->
+
+   <!-- tab classes -->
+   <div class="container">
+     <div id="divTab" >
+       <table id="tab" class="table-striped">
+         <thead>
+
+           <!-- The form Start with a Bootstrap class -->
+
+          {{ form_start(form) }}
+
+           <div id="topPart">
+
+              <span > <h5>Demandeur</h5> </span>
+              <!-- "Demandeur" Field -->
+              <div class="container" id="divdemandeur">
+                <span id="demandeur" > {{app.user.nom}} {{app.user.prenom}} </span>
+              </div>
+
+              <!-- Techniciens choice field -->
+
+              {{form_label(form.technicien)}}
+              {{form_widget(form.technicien)}}
+
+            <div>
+
+            <br/>
+            <!-- Table heads -->
+
+            <tr>
+                <th></th>
+                <th>reference Maximo</th>
+                <th>Description</th>
+                <th>Taille</th>
+                <th>Quantite</th>
+                <th>Prix Unitaire HT</th>
+            </tr>
+          </thead>
+
+          <!-- displaying the form's lines -->
+          {% for ligne in form.ligneD %}
+          {% set  epiEntity = ligne.vars.data.epi %}
+
+          <!-- form -->
+          <tr>
+              <!-- Checkbox -->
+              <td class="myCb"> {{form_row(ligne.selection)}}</td>
+              <!-- fields -->
+              <td> {{epiEntity.refMaximo}}</td>
+
+              <td> {{epiEntity.description}}</td>
+
+              <td> {{form_row(ligne.taille, { 'attr': { 'maxlength' : 4 }})}}</td>
+
+              <td id="qte_{{ligne.vars.name}}"> {{form_row(ligne.quantite, { 'attr': { 'maxlength' : 3 }})}}</td>
+
+              <td id="puht_{{ligne.vars.name}}"> {{epiEntity.puht|round(2)}}</td>
+          </tr>
+
+         {% endfor %}
+
+
+              <!-- outputing  field of prices sum's of selected items -->
+          <tr>
+              <td colspan="5" id="totalPrix">Total Prix Unitaire HT €</td>
+              <td><p id="total"></p></td>
+          </tr>
+        </table>
+              <!-- "commentaire" field -->
+        <div class="form-group">
+           <label for="comment">Commentaire:</label>
+              {{form_widget(form.commentaire, { 'attr': { 'maxlength' : 130 }})}}<br/>
+              {{form_widget(form.save)}}
+              <!-- Form end -->
+              {{form_end(form)}}
+      <!-- end of form div -->
+            <br/>
+        </div>
+
+
+      </div>
+  </div>
+</div>
+
+  <script src="{{ asset('js/jquery.min.js') }}"></script>
+  <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+
+
+    <script>
+
+        /*add Event "check" to Submit button */
+        var submitButton = document.getElementById("appbundle_epi_save");
+        submitButton.addEventListener("click", testCheck);
+        /* Check selected at least on item function */
+        function testCheck()
+        {
+            var checkqte ;
+            var okQte = [];
+            var test=false, i, choix=false ;
+            /*check the checkboxes one by one*/
+            for (i=0; i < {{ form.ligneD | length }}; i++)
+            {
+                 choix = document.getElementById('appbundle_epi_ligneD_'+i+'_selection').checked;
+                // checkqte = document.getElementById('appbundle_epi_ligneD_'+i+'_quantite').value;
+
+
+              /*   if( (0 < checkqte) && (checkqte < 101)  && ( Number.isInteger(checkqte) ))
+                 {
+
+                    okQte[i]=true;
+                 }
+                 else
+                 {
+                   okQte[i]=false;
+                 }*/
+                 if (choix)
+                     {
+                      /*if there is at least on checkbox selected so test var will be on true*/
+                      test=true;
+                     }
+
+            }
+
+            if (test != true)
+            {
+              /*create an alert when there is no checkbox selected*/
+              alert("Vous devez choisir au moins un EPI:");
+            }
+            else
+            {
+            /*  if(testQte(okQte)==false)
+              {
+                alert("Choisissez une quantité entière entre 1 et 100");
+              }
+              else
+              {*/
+              /*send the form*/
+            //  alert("votrecommande a bien été envoyée");
+              document.getElementsByTagName('appbundle_epi').submit();
+            }
+          }
+
+
+
+function testQte(table){
+  var result= true;
+  for (var ii =0; ii<table.length; ii++)
+  {
+    result = (result && table[ii]);
+  }
+  return result;
+}
+
+        /* add total price field*/
+        var boites = new Array();
+        var prixelt = new Array();
+        var prix = new Array();
+        var qte = new Array();
+        var qtelt = new Array();
+        var j , sum=0;
+        var x;
+
+
+
+        for (j=0; j < {{ form.ligneD | length }}; j++)
+        {
+          /*add event for clicking on checkboxes*/
+          boites[j]=document.getElementById('appbundle_epi_ligneD_'+j+'_selection');
+          boites[j].addEventListener("click", totalPrix);
+          prixelt[j] = document.getElementById('puht_'+j);
+          prix[j] = parseFloat(prixelt[j].innerHTML) ;
+          qtelt[j] = document.getElementById('appbundle_epi_ligneD_'+j+'_quantite');
+          qtelt[j].addEventListener("change", totalPrix);
+
+        }
+
+        /* function that computes total "epi" selected price */
+       function totalPrix(){
+        sum=0;
+         for (var z=0; z < {{ form.ligneD | length }}; z++){
+
+              if(document.getElementById('appbundle_epi_ligneD_'+z+'_selection').checked){
+                x = document.getElementById('appbundle_epi_ligneD_'+z+'_quantite').value;
+                qte[z] = parseFloat(x) ;
+                sum += (prix[z]*qte[z]);
+                }
+          }
+              document.getElementById("total").innerHTML = sum.toFixed(2) ;
+          }
+
+    </script>
+ </body>
+ </html>

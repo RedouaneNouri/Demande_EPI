@@ -1,0 +1,154 @@
+
+ <!doctype html>
+
+ <html lang="fr">
+
+ <head>
+ 		<meta charset ="UTF-8">
+ 		<title> Demande EPI </title>
+
+    <!--        Stylesheets       -->
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/chart.css') }}" />
+    <script href="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script href="{{ asset('js/jquery.min.js') }}"></script>
+    <script href="{{ asset('js/bootstrap.js') }}"></script>
+    <link src="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link src="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"
+
+ </head>
+ <body>
+   <div>
+     <!-- navbar (Bootstrap classes) -->
+     <nav id="nav" class="navbar navbar-expand-sm  ">
+    <!-- Brand -->
+    <a class="navbar-brand" href="{{ path('demande') }}">Demande EPI</a>
+
+    <!-- Links -->
+
+    <ul class="navbar-nav">
+
+      {% if  (app.user.hasRole('ROLE_ADMIN') or app.user.hasRole('ROLE_VALIDEUR'))%}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ path('listeDemande') }}">Historique des demandes</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{{ path('fos_user_registration_register') }}">Ajouter un utilisateur</a>
+        </li>
+
+        <li class="nav-item ">
+          <a class="nav-link " href="{{ path('gestionRessources') }}"  >
+            Gestion de ressources
+          </a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link " href="{{ path('chart') }}" >
+            Statistiques
+          </a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link " href="https://drive.google.com/open?id=10OXhpcbkLzNPfxZP7VJc0byJDcnuWQJQKBYOjTTpYzo" >
+            Guide d'utilisation
+          </a>
+        </li>
+
+        {% endif %}
+      </ul>
+    </nav>
+   </br>
+ </div>
+
+
+<div class="container">
+  <div class='row'>
+    <h3 class="myTitle"> Nombre de demandes d'EPI par Technicien </h3>
+      <form method="POST"  >
+        <button class="btn btn-danger" id="download_chart1" type="submit" name="EpiByTechButton">Télécharger en Excel </button>
+      </form>
+  </div>
+
+  <div id="nbEpiByTehnicien" class="row">
+
+    <div id="div_graph" class="col-sm-8"></div>
+
+    <table  class="table-striped col-sm-4 data_graph">
+      <thead class="tabHeader">
+        <th colspan="2"> Techniciens </th>
+        <th> Nombre d'EPI affectées</th>
+      </thead>
+      <tbody>
+      {% for technicien in techniciens %}
+        <tr>
+            <td> {{ technicien.nom }}</td><td> {{ technicien.prenom }} </td>
+            <td> {{ nbEpiByTechnicien[(loop.index - 1)] }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+      <br/><br/>
+
+      <!-- Camembert Nobre Epi par EPI -->
+      <div class="row">
+        <h3 class="myTitle"> Nombre de demandes d'EPI par EPI </h3>
+          <form method="POST"  >
+            <button class="btn btn-danger" id="download_chart2" type="submit" name="EpiByEpiButton">Télécharger en Excel </button>
+          </form>
+      </div>
+      <div id="nbEpiByEpi" class="row">
+        <div id='div_graph2' class="col-sm-8" ></div>
+        <table class="table-striped col-sm-4 data_graph" >
+          <thead class="tabHeader">
+            <th> EPI </th>
+            <th> Nombre de fois demandé</th>
+          </thead>
+          <tbody>
+          {% for epi in epis %}
+            <tr>
+                <td> {{ epi.description }} </td>
+                <td> {{ nbEpiByEpi[(loop.index - 1)] }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <br/><br/>
+
+      <div class="row">
+        <h3 class="myTitle"> Nombre de demandes d'EPI par Date </h3>
+          <form method="POST"  >
+            <button class="btn btn-danger" id="download_chart3" type="submit" name="EpiByDateButton">Télécharger en Excel </button>
+          </form>
+      </div>
+      <div id="nbEpiByDate" class="row">
+        <div id='div_graph3' class="col-sm-8" ></div>
+        <table id="data_graph3" class="table-striped col-sm-4" >
+          <thead class="tabHeader">
+            <th> EPI </th>
+            <th> Nombre d'EPIs demandés par mois</th>
+          </thead>
+          <tbody>
+          {% for moi in mois %}
+            <tr>
+                <td> {{ moi }} </td>
+                <td> {{ nbEpiByDate[(loop.index - 1)] }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+</div>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+
+        {{ gc_draw([chart, pieChart, col], ['div_graph', 'div_graph2', 'div_graph3']) }}
+
+    </script>
+
+
+  </body>
+</html>

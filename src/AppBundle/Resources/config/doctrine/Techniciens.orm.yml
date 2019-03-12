@@ -1,0 +1,31 @@
+AppBundle\Entity\Techniciens:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\TechniciensRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    oneToMany:
+        lesDemandes:
+            targetEntity: lesDemandes
+            mappedBy: technicien
+            cascade: ["persist"]
+    fields:
+        bT:
+            type: integer
+            unique: true
+            column: BT
+        prenom:
+            type: string
+            length: 255
+            nullable: true
+        nom:
+            type: string
+            length: 255
+        actif:
+            type: integer
+            nullable: false
+    lifecycleCallbacks: {  }
